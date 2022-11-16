@@ -1,13 +1,17 @@
 import 'dart:async';
 
 import 'package:lucifer/lucifer.dart';
+import 'package:scheduler/service/cron_service.dart';
 
 class ExecutionController extends Controller {
   ExecutionController(App app) : super(app);
 
   @override
   FutureOr index(Req req, Res res) async {
-    await res.render('execution/list', {'title': 'Hello Detective'});
+    var list = await getAllExecutions();
+    await res.render('execution/list', {
+      'data': list.entries.toList().map((e) => {'key': e.key, 'value': e.value})
+    });
   }
 
   @override
