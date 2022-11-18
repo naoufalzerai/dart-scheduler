@@ -9,7 +9,7 @@ void main() async {
   final app = App();
   final port = env('PORT') ?? 3000;
 
-  app.use(logger());
+  app.use(logger(level: Level.error));
   app.use(static('public'));
   app.use(templating());
   // usually sent from REST API
@@ -25,7 +25,10 @@ void main() async {
     await res.render('index', {'title': 'Hello Detective'});
     // await res.send(output);
   });
-  app.route('/job', job).get('/create', job.addForm);
+  app
+      .route('/job', job)
+      .get('/create', job.addForm)
+      .get('/edit/:id', job.editForm);
   app.route('/execution', execution);
 
   await app.listen(port);

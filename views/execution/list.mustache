@@ -1,8 +1,14 @@
-<table class="table">
-  <h2>Test</h2>
+<div class="container">
+
+  <table class="table table-hover">
+  <h2>
+    {{#back}}
+    <a class="btn " href="/job" role="button"><i class="fas fa-arrow-left"></i></a> 
+    {{/back}} 
+    Schedules
+  </h2>
     <thead>
       <tr>
-        <th scope="col">#</th>
         <th scope="col">Scedule</th>
         <th scope="col">Status</th>
         <th scope="col">Date</th>
@@ -11,8 +17,7 @@
     </thead>
     <tbody>
       {{#data}}
-      <tr>
-        <th scope="row">{{key}}</th>        
+      <tr>   
         <td>{{value.cronName}}</td>
         <td>{{value.name}}</td>
         <td>{{value.date}}</td>
@@ -22,3 +27,4 @@
 
     </tbody>
   </table>
+</div>  

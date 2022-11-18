@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cron/cron.dart';
@@ -45,51 +46,64 @@ void _loadAllCron() async {
 
 void _runCron(String i) async {
   var c = await cronBox.get(i);
-  var id = uuid.v1();
-  var s = cron.schedule(Schedule.parse('*/1 * * * *'), () async {
-    // insert execution
-    executionBox.put(id, {
-      'cronId': i,
-      'cronName': c["name"],
-      'name': 'start',
-      'date': DateTime.now().toString(),
-      'code': "0",
-    });
-    // run schedule
-    Process.start('ls', ['-l']).whenComplete(() {
-      // insert end of execution
-      executionBox.put(id, {
+  var s;
+  try {
+    s = cron.schedule(Schedule.parse(c['schedule']), () async {
+      var id = uuid.v1();
+      // insert execution
+      executionBox.put('start-' + id, {
         'cronId': i,
         'cronName': c["name"],
-        'name': 'end',
+        'name': 'start',
         'date': DateTime.now().toString(),
-        'code': "0",
+        'code': "",
       });
-    }).onError((error, stackTrace) {
-      // catch error and store them into execution
-      executionBox.put(id, {
-        'cronId': i,
-        'cronName': c["name"],
-        'name': 'error',
-        'date': DateTime.now().toString(),
-        'code': stackTrace.toString(),
-      });
-      throw "$error";
+      // run schedule
+      try {
+        final Process process = await Process.start(c['app'], [c['script']]);
+        final List<int> output = <int>[];
+        process.stdout.listen((List<int> event) {
+          output.addAll(event);
+          stdout.add(event);
+        }, onDone: () async {
+          executionBox.put('end-' + id, {
+            'cronId': i,
+            'cronName': c["name"],
+            'name': 'end: ' + utf8.decoder.convert(output),
+            'date': DateTime.now().toString(),
+            'code': await process.exitCode,
+          });
+        });
+      } catch (e) {
+        executionBox.put('error-' + id, {
+          'cronId': i,
+          'cronName': c["name"],
+          'name': 'error',
+          'date': DateTime.now().toString(),
+          'code': e.toString(),
+        });
+      }
     });
-  });
+  } catch (e) {
+    Logger().d(e);
+  }
+
   inMemoryCron[i] = {
-    'scheduleTask': s,
+    'scheduleTask': s ?? "",
     'name': c["name"],
     'actif': c["actif"],
     'schedule': c["schedule"],
   };
 }
 
-dynamic getAllExecutions() async {
-  final execs = await executionBox.getAllValues();
-  return execs;
+Future<Map<String, dynamic>> getAllExecutions() {
+  return executionBox.getAllValues();
 }
 
 Map<String, dynamic> getAllJobs() {
   return inMemoryCron;
+}
+
+Future<dynamic> getJobForEdit(key) {
+  return cronBox.get(key);
 }

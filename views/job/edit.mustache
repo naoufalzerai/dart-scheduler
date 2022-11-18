@@ -1,0 +1,33 @@
+<h1><a class="btn " href="/job" role="button"><i class="fas fa-arrow-left"></i></a>Edit job {{job.name}}</h1>
+<form action="/job" method="post">
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input required type="text" class="form-control" name="name" id="name" aria-describedby="helpNameId"
+            placeholder="" value="{{job.name}}">
+        <small id="helpNameId" class="form-text text-muted">Job name</small>
+    </div>
+    <div class="mb-3">
+        <label for="schedule" class="form-label">Schedule <i class="fas fa-cogs    "></i></label>
+        <input required type="text" value="{{job.schedule}}" class="form-control" name="schedule" id="schedule"
+            aria-describedby="helpScheduleId" placeholder="">
+        <small id="helpScheduleId" class="form-text text-muted">Cron expression : minute (0-59) hour (0 - 23) day of the
+            month (1 - 31) month (1 - 12) day of the week (0 - 6)</small>
+    </div>
+    <div class="mb-3">
+        <label for="app" class="form-label">Program</label>
+        <input required type="text" value="{{job.app}}" class="form-control" name="app" id="app"
+            aria-describedby="helpAppId" placeholder="">
+        <small id="helpAppId" class="form-text text-muted">Program to run exemple : Python, curl ...</small>
+    </div>
+    <div class="mb-3">
+        <label for="script" class="form-label">Script</label>
+        <textarea required class="form-control" name="script" id="" rows="3">{{job.script}}</textarea>
+        <small id="helpScriptId" class="form-text text-muted">Script to be executed</small>
+    </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="enabled" name="enabled" checked>
+        <label class="form-check-label" for="enabled">Enabled</label>
+    </div>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button>
+    <a class="btn btn-danger" href="/job" role="button">Cancel</a>
+</form>

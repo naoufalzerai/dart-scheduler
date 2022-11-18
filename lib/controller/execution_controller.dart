@@ -10,22 +10,24 @@ class ExecutionController extends Controller {
   FutureOr index(Req req, Res res) async {
     var list = await getAllExecutions();
     await res.render('execution/list', {
-      'data': list.entries.toList().map((e) => {'key': e.key, 'value': e.value})
+      'back': false,
+      'data': list.entries.toList().map(
+            (e) => {'key': e.key, 'value': e.value},
+          )
     });
   }
 
   @override
-  FutureOr view(Req req, Res res) async {}
+  FutureOr view(Req req, Res res) async {
+    // await res.send(req.params["id"]);
+    var list = await getAllExecutions();
 
-  @override
-  FutureOr create(Req req, Res res) async {}
-
-  @override
-  FutureOr edit(Req req, Res res) async {}
-
-  @override
-  FutureOr delete(Req req, Res res) async {}
-
-  @override
-  FutureOr deleteAll(Req req, Res res) async {}
+    await res.render('execution/list', {
+      'back': true,
+      'data': list.entries
+          .toList()
+          .where((e) => e.value['cronId'] == req.params["id"])
+          .map((e) => {'key': e.key, 'value': e.value})
+    });
+  }
 }

@@ -10,9 +10,14 @@ class JobController extends Controller {
     await res.render('job/create', {});
   }
 
+  FutureOr editForm(Req req, Res res) async {
+    await res
+        .render('job/edit', {'job': await getJobForEdit(req.params["id"])});
+  }
+
   @override
   FutureOr index(Req req, Res res) async {
-    var list = await getAllJobs();
+    var list = getAllJobs();
     await res.render('job/list', {
       'data': list.entries.toList().map((e) => {'key': e.key, 'value': e.value})
     });
