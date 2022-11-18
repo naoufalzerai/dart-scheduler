@@ -1,2 +1,9 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+# Dart scheduler
+
+## todo:
+- [ ] Edit 
+- [ ] Start/Stop 
+- [ ] Delete
+- [x] Test script
+- [x] Sort executions by date
+- [x] Bug first job didn't show

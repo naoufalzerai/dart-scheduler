@@ -20,8 +20,14 @@
         <small id="helpAppId" class="form-text text-muted">Program to run exemple : Python, curl ...</small>
     </div>
     <div class="mb-3">
+      <label for="params" class="form-label">Parameters</label>
+      <input type="text"
+        class="form-control" name="params" value="{{job.params}}" id="params" aria-describedby="helpParamsId" placeholder="">
+      <small id="helpParamsId" class="form-text text-muted">Parameters</small>
+    </div>
+    <div class="mb-3">
         <label for="script" class="form-label">Script</label>
-        <textarea required class="form-control" name="script" id="" rows="3">{{job.script}}</textarea>
+        <textarea  class="form-control" name="script" id="" rows="3">{{job.script}}</textarea>
         <small id="helpScriptId" class="form-text text-muted">Script to be executed</small>
     </div>
     <div class="form-check form-switch">

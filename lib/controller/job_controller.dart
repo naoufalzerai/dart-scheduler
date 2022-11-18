@@ -33,6 +33,7 @@ class JobController extends Controller {
       'schedule': req.data('schedule'),
       'actif': (req.data('enabled') == "on"),
       'script': req.data('script'),
+      'params': req.data('params'),
       'app': req.data('app'),
     });
     await res.to("/job");

@@ -46,6 +46,7 @@ void _loadAllCron() async {
 
 void _runCron(String i) async {
   var c = await cronBox.get(i);
+  // ignore: prefer_typing_uninitialized_variables
   var s;
   try {
     s = cron.schedule(Schedule.parse(c['schedule']), () async {
@@ -60,11 +61,33 @@ void _runCron(String i) async {
       });
       // run schedule
       try {
-        final Process process = await Process.start(c['app'], [c['script']]);
+        List<String> params = [];
+        if (c['params'].isNotEmpty) {
+          params.addAll(c['params'].toString().split(' '));
+        }
+        if (c['script'].isNotEmpty) {
+          params.add(c['script'].toString());
+        }
+        final Process process = await Process.start(c['app'], params);
         final List<int> output = <int>[];
+        process.stderr.listen(
+          (event) {
+            stdout.add(event);
+            output.addAll(event);
+          },
+          onDone: () async {
+            executionBox.put('end-' + id, {
+              'cronId': i,
+              'cronName': c["name"],
+              'name': 'end: ' + utf8.decoder.convert(output),
+              'date': DateTime.now().toString(),
+              'code': await process.exitCode,
+            });
+          },
+        );
         process.stdout.listen((List<int> event) {
-          output.addAll(event);
           stdout.add(event);
+          output.addAll(event);
         }, onDone: () async {
           executionBox.put('end-' + id, {
             'cronId': i,
