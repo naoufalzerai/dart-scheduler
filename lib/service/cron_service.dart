@@ -130,3 +130,21 @@ Map<String, dynamic> getAllJobs() {
 Future<dynamic> getJobForEdit(key) {
   return cronBox.get(key);
 }
+
+void deleteJob(key) async {
+  //stop jobs
+  inMemoryCron.remove(key);
+  cronBox.delete(key);
+  executionBox.deleteAll((await executionBox.getAllValues())
+      .entries
+      .toList()
+      .where((e) => e.value["cronId"] == key)
+      .map((e) => e.key)
+      .toList());
+}
+
+void editJob(id, v) async {
+  inMemoryCron[id] = v;
+  cronBox.put(id, v);
+  //recreate jobs
+}

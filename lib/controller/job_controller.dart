@@ -24,9 +24,6 @@ class JobController extends Controller {
   }
 
   @override
-  FutureOr view(Req req, Res res) async {}
-
-  @override
   FutureOr create(Req req, Res res) async {
     addCron({
       'name': req.data('name'),
@@ -40,11 +37,13 @@ class JobController extends Controller {
   }
 
   @override
-  FutureOr edit(Req req, Res res) async {}
+  FutureOr edit(Req req, Res res) async {
+    print("edit");
+  }
 
   @override
-  FutureOr delete(Req req, Res res) async {}
-
-  @override
-  FutureOr deleteAll(Req req, Res res) async {}
+  FutureOr delete(Req req, Res res) async {
+    deleteJob(req.params['id']);
+    await res.to("/job");
+  }
 }

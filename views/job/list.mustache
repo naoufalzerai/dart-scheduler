@@ -19,14 +19,14 @@
           <td>{{value.schedule}}</td>
           <td>
             {{^value.actif}}
-            <a href=""><span class="badge bg-success"><i class="fas fa-play-circle fa-xs fa-fw"></i></span></a>
+            <a href="#" onclick="toggleJob('{{key}}',true)"><span class="badge bg-success"><i class="fas fa-play-circle fa-xs fa-fw"></i></span></a>
             {{/value.actif}}
             {{#value.actif}}
-            <a href=""><span class="badge bg-danger"><i class="fas fa-pause-circle fa-xs fa-fw"></i></span></a>
+            <a href="#" onclick="toggleJob('{{key}}',false)"><span class="badge bg-danger"><i class="fas fa-pause-circle fa-xs fa-fw"></i></span></a>
             {{/value.actif}}
             <a href="/job/edit/{{key}}"><span class="badge bg-primary"><i class="fas fa-pen-alt fa-xs fa-fw"></i></span></a>
             <a href="/execution/{{key}}"><span class="badge bg-success"><i class="fas fa-scroll fa-xs fa-fw"></i></span></a>
-            <a href=""><span class="badge bg-danger"><i class="fas fa-trash fa-xs fa-fw"></i></span></a>
+            <a href="#" onclick="deleteJob('{{key}}')"><span class="badge bg-danger"><i class="fas fa-trash fa-xs fa-fw"></i></span></a>
           </td>
         </tr>
         {{/data}}

@@ -33,4 +33,10 @@ class ExecutionController extends Controller {
           .map((e) => {'key': e.key, 'value': e.value})
     });
   }
+
+  @override
+  FutureOr deleteAll(Req req, Res res) async {}
+
+  @override
+  FutureOr delete(Req req, Res res) async {}
 }

@@ -1,6 +1,7 @@
 # Dart scheduler
 
 ## todo:
+- [ ] Wipe logs 
 - [ ] Edit 
 - [ ] Start/Stop 
 - [ ] Delete
