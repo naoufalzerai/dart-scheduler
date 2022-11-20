@@ -1,6 +1,18 @@
-function editJob(params) {
-    fetch('/job/1',{
+function editJob(id) {
+    data = {
+        'name': document.getElementById('name').value,
+        'schedule': document.getElementById('schedule').value,
+        'enabled': document.getElementById('enabled').checked,
+        'script': document.getElementById('script').value,
+        'params': document.getElementById('params').value,
+        'app': document.getElementById('app').value,
+    }
+    fetch('/job/'+id,{
         method:'PUT',
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
     }).then(response=>document.location.replace('/job/'))
 }
 function deleteJob(id) {

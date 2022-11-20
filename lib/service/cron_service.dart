@@ -36,6 +36,12 @@ void addCron(Map c) async {
   _runCron(id);
 }
 
+void editCron(String id, Map c) async {
+  await cronBox.put(id, c);
+  inMemoryCron[id]['scheduleTask'].cancel();
+  _runCron(id);
+}
+
 void _loadAllCron() async {
   var lst = await cronBox.getAllValues();
   // foreach cron
@@ -48,34 +54,48 @@ void _runCron(String i) async {
   var c = await cronBox.get(i);
   // ignore: prefer_typing_uninitialized_variables
   var s;
-  try {
-    s = cron.schedule(Schedule.parse(c['schedule']), () async {
-      var id = uuid.v1();
-      // insert execution
-      executionBox.put('start-' + id, {
-        'cronId': i,
-        'cronName': c["name"],
-        'name': 'start',
-        'date': DateTime.now().toString(),
-        'code': "",
-      });
-      // run schedule
-      try {
-        List<String> params = [];
-        if (c['params'].isNotEmpty) {
-          params.addAll(c['params'].toString().split(' '));
-        }
-        if (c['script'].isNotEmpty) {
-          params.add(c['script'].toString());
-        }
-        final Process process = await Process.start(c['app'], params);
-        final List<int> output = <int>[];
-        process.stderr.listen(
-          (event) {
+  if (c['actif']) {
+    try {
+      s = cron.schedule(Schedule.parse(c['schedule']), () async {
+        var id = uuid.v1();
+        // insert execution
+        executionBox.put('start-' + id, {
+          'cronId': i,
+          'cronName': c["name"],
+          'name': 'start',
+          'date': DateTime.now().toString(),
+          'code': "",
+        });
+        // run schedule
+        try {
+          List<String> params = [];
+          if (c['params'].isNotEmpty) {
+            params.addAll(c['params'].toString().split(' '));
+          }
+          if (c['script'].isNotEmpty) {
+            params.add(c['script'].toString());
+          }
+          final Process process = await Process.start(c['app'], params);
+          final List<int> output = <int>[];
+          process.stderr.listen(
+            (event) {
+              stdout.add(event);
+              output.addAll(event);
+            },
+            onDone: () async {
+              executionBox.put('end-' + id, {
+                'cronId': i,
+                'cronName': c["name"],
+                'name': 'end: ' + utf8.decoder.convert(output),
+                'date': DateTime.now().toString(),
+                'code': await process.exitCode,
+              });
+            },
+          );
+          process.stdout.listen((List<int> event) {
             stdout.add(event);
             output.addAll(event);
-          },
-          onDone: () async {
+          }, onDone: () async {
             executionBox.put('end-' + id, {
               'cronId': i,
               'cronName': c["name"],
@@ -83,32 +103,20 @@ void _runCron(String i) async {
               'date': DateTime.now().toString(),
               'code': await process.exitCode,
             });
-          },
-        );
-        process.stdout.listen((List<int> event) {
-          stdout.add(event);
-          output.addAll(event);
-        }, onDone: () async {
-          executionBox.put('end-' + id, {
+          });
+        } catch (e) {
+          executionBox.put('error-' + id, {
             'cronId': i,
             'cronName': c["name"],
-            'name': 'end: ' + utf8.decoder.convert(output),
+            'name': 'error',
             'date': DateTime.now().toString(),
-            'code': await process.exitCode,
+            'code': e.toString(),
           });
-        });
-      } catch (e) {
-        executionBox.put('error-' + id, {
-          'cronId': i,
-          'cronName': c["name"],
-          'name': 'error',
-          'date': DateTime.now().toString(),
-          'code': e.toString(),
-        });
-      }
-    });
-  } catch (e) {
-    Logger().d(e);
+        }
+      });
+    } catch (e) {
+      Logger().d(e);
+    }
   }
 
   inMemoryCron[i] = {
@@ -134,7 +142,7 @@ Future<dynamic> getJobForEdit(key) {
 void deleteJob(key) async {
   //stop jobs
 
-  inMemoryCron['key']['schedule'].cancel();
+  inMemoryCron[key]['scheduleTask'].cancel();
   inMemoryCron.remove(key);
   cronBox.delete(key);
   executionBox.deleteAll((await executionBox.getAllValues())

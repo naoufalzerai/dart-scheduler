@@ -11,8 +11,8 @@ class JobController extends Controller {
   }
 
   FutureOr editForm(Req req, Res res) async {
-    await res
-        .render('job/edit', {'job': await getJobForEdit(req.params["id"])});
+    await res.render('job/edit',
+        {'id': req.params["id"], 'job': await getJobForEdit(req.params["id"])});
   }
 
   FutureOr toggle(Req req, Res res) async {
@@ -33,7 +33,7 @@ class JobController extends Controller {
     addCron({
       'name': req.data('name'),
       'schedule': req.data('schedule'),
-      'actif': (req.data('enabled') == "on"),
+      'actif': req.data('enabled'),
       'script': req.data('script'),
       'params': req.data('params'),
       'app': req.data('app'),
@@ -43,6 +43,15 @@ class JobController extends Controller {
 
   @override
   FutureOr edit(Req req, Res res) async {
+    var data = {
+      'name': req.data('name'),
+      'schedule': req.data('schedule'),
+      'actif': req.data('enabled'),
+      'script': req.data('script'),
+      'params': req.data('params'),
+      'app': req.data('app'),
+    };
+    editCron(req.params['id'], data);
     await res.send('');
   }
 

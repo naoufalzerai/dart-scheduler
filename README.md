@@ -35,9 +35,9 @@ dart compile exe -o dart_scheduler.exe lib/main.dart
 ## Web Api
 
 # Todo list:
-- [ ] Edit 
+- [x] Edit 
 - [ ] Docker-compose
-- [ ] Enable/disable
+- [x] Enable/disable
 - [x] Wipe logs 
 - [x] Start/Stop 
 - [x] Delete
