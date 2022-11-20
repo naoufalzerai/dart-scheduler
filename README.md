@@ -1,6 +1,7 @@
 ![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
 # Introduction
 Dart scheduler allows you to run agnostic cron and jobs, all you have to do is fire the app and dchedule your job 🔥
+![home](doc/img/job1.png)
 # How to run
 ## Windows
 
@@ -9,9 +10,10 @@ Dart scheduler allows you to run agnostic cron and jobs, all you have to do is f
 ## Macos
 
 ## Docker
+
 ## Docker compose
 ## From source
-Make sure you have Dart [Dart](https://dart.dev/get-dart) instaled 
+Make sure you have [Dart](https://dart.dev/get-dart) instaled 
 
 1. Clone the repo
 ```console
@@ -35,8 +37,10 @@ dart compile exe -o dart_scheduler.exe lib/main.dart
 ## Web Api
 
 # Todo list:
-- [x] Edit 
+- [ ] Authentification
+- [ ] Filter and sort table
 - [ ] Docker-compose
+- [x] Edit 
 - [x] Enable/disable
 - [x] Wipe logs 
 - [x] Start/Stop 
