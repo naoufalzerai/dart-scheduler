@@ -28,7 +28,8 @@ void main() async {
   app
       .route('/job', job)
       .get('/create', job.addForm)
-      .get('/edit/:id', job.editForm);
+      .get('/edit/:id', job.editForm)
+      .post('/toggle/:id', job.toggle);
   app.route('/execution', execution);
 
   await app.listen(port);

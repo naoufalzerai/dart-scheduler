@@ -133,6 +133,8 @@ Future<dynamic> getJobForEdit(key) {
 
 void deleteJob(key) async {
   //stop jobs
+
+  inMemoryCron['key']['schedule'].cancel();
   inMemoryCron.remove(key);
   cronBox.delete(key);
   executionBox.deleteAll((await executionBox.getAllValues())
@@ -147,4 +149,88 @@ void editJob(id, v) async {
   inMemoryCron[id] = v;
   cronBox.put(id, v);
   //recreate jobs
+}
+
+void toggleJob(i) async {
+  inMemoryCron[i]['actif'] = !inMemoryCron[i]['actif'];
+  if (inMemoryCron[i]['actif']) {
+    var c = await cronBox.get(i);
+    var s;
+    try {
+      s = cron.schedule(Schedule.parse(c['schedule']), () async {
+        var id = uuid.v1();
+        // insert execution
+        executionBox.put('start-' + id, {
+          'cronId': i,
+          'cronName': c["name"],
+          'name': 'start',
+          'date': DateTime.now().toString(),
+          'code': "",
+        });
+        // run schedule
+        try {
+          List<String> params = [];
+          if (c['params'].isNotEmpty) {
+            params.addAll(c['params'].toString().split(' '));
+          }
+          if (c['script'].isNotEmpty) {
+            params.add(c['script'].toString());
+          }
+          final Process process = await Process.start(c['app'], params);
+          final List<int> output = <int>[];
+          process.stderr.listen(
+            (event) {
+              stdout.add(event);
+              output.addAll(event);
+            },
+            onDone: () async {
+              executionBox.put('end-' + id, {
+                'cronId': i,
+                'cronName': c["name"],
+                'name': 'end: ' + utf8.decoder.convert(output),
+                'date': DateTime.now().toString(),
+                'code': await process.exitCode,
+              });
+            },
+          );
+          process.stdout.listen((List<int> event) {
+            stdout.add(event);
+            output.addAll(event);
+          }, onDone: () async {
+            executionBox.put('end-' + id, {
+              'cronId': i,
+              'cronName': c["name"],
+              'name': 'end: ' + utf8.decoder.convert(output),
+              'date': DateTime.now().toString(),
+              'code': await process.exitCode,
+            });
+          });
+        } catch (e) {
+          executionBox.put('error-' + id, {
+            'cronId': i,
+            'cronName': c["name"],
+            'name': 'error',
+            'date': DateTime.now().toString(),
+            'code': e.toString(),
+          });
+        }
+      });
+    } catch (e) {
+      Logger().d(e);
+    }
+    inMemoryCron[i]['scheduleTask'] = s;
+  } else {
+    inMemoryCron[i]['scheduleTask'].cancel();
+  }
+}
+
+Future deleteExecution(String? key) async {
+  if (key == null) return executionBox.clear();
+  var keys = (await executionBox.getAllValues())
+      .entries
+      .toList()
+      .where((e) => e.value["cronId"] == key)
+      .map((e) => e.key)
+      .toList();
+  return executionBox.deleteAll(keys);
 }

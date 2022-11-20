@@ -12,6 +12,7 @@ class ExecutionController extends Controller {
       ..sort((a, b) => b.value['date'].compareTo(a.value['date']));
     await res.render('execution/list', {
       'back': false,
+      'id': req.params["id"] ?? '',
       'data': Map.fromEntries(list).entries.toList().map(
             (e) => {'key': e.key, 'value': e.value},
           )
@@ -20,12 +21,12 @@ class ExecutionController extends Controller {
 
   @override
   FutureOr view(Req req, Res res) async {
-    // await res.send(req.params["id"]);
     var list = (await getAllExecutions()).entries.toList()
       ..sort((a, b) => b.value['date'].compareTo(a.value['date']));
 
     await res.render('execution/list', {
       'back': true,
+      'id': req.params["id"] ?? '',
       'data': Map.fromEntries(list)
           .entries
           .toList()
@@ -35,8 +36,14 @@ class ExecutionController extends Controller {
   }
 
   @override
-  FutureOr deleteAll(Req req, Res res) async {}
+  FutureOr deleteAll(Req req, Res res) async {
+    deleteExecution(null);
+    await res.send('');
+  }
 
   @override
-  FutureOr delete(Req req, Res res) async {}
+  FutureOr delete(Req req, Res res) async {
+    deleteExecution(req.params["id"]);
+    await res.send(req.params["id"]);
+  }
 }

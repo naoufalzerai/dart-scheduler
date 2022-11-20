@@ -15,6 +15,11 @@ class JobController extends Controller {
         .render('job/edit', {'job': await getJobForEdit(req.params["id"])});
   }
 
+  FutureOr toggle(Req req, Res res) async {
+    toggleJob(req.params['id']);
+    await res.send('');
+  }
+
   @override
   FutureOr index(Req req, Res res) async {
     var list = getAllJobs();
@@ -38,12 +43,12 @@ class JobController extends Controller {
 
   @override
   FutureOr edit(Req req, Res res) async {
-    print("edit");
+    await res.send('');
   }
 
   @override
   FutureOr delete(Req req, Res res) async {
     deleteJob(req.params['id']);
-    await res.to("/job");
+    await res.send('');
   }
 }
