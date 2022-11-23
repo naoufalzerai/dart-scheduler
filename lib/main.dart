@@ -8,6 +8,7 @@ import 'service/cron_service.dart';
 void main() async {
   final app = App();
   final port = env('PORT') ?? 3000;
+  final host = env('HOST') ?? '127.0.0.1';
 
   app.use(logger(level: Level.error));
   app.use(static('public'));
@@ -32,9 +33,10 @@ void main() async {
       .post('/toggle/:id', job.toggle);
   app.route('/execution', execution);
 
-  await app.listen(port);
+  await app.listen(port, host, (() {
+    print('Server running at http://${app.host}:${app.port}');
+  }));
 
-  print('Server running at http://${app.host}:${app.port}');
   app.checkRoutes();
   startDemonSchedule();
 }

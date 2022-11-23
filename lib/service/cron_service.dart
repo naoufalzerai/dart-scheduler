@@ -32,6 +32,7 @@ void startDemonSchedule() async {
 
 void addCron(Map c) async {
   var id = uuid.v1();
+  c["actif"] = (c["actif"] == "on");
   await cronBox.put(id, c);
   _runCron(id);
 }
