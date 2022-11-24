@@ -1,4 +1,5 @@
-![dart build](https://github.com/naoufalzerai/dart_scheduler/actions/workflows/dart.yml/badge.svg)
+![Dart build](https://github.com/naoufalzerai/dart_scheduler/actions/workflows/dart.yml/badge.svg)
+![Docker build](https://github.com/naoufalzerai/dart_scheduler/actions/workflows/dart.yml/docker-image.svg)
 
 # Introduction
 Dart scheduler allows you to run agnostic cron and jobs, all you have to do is fire the app and dchedule your job 🔥
