@@ -17,7 +17,13 @@ AES_CIPHER = 2,3,2,10,3,77,2,3,31,2,65,151,35,111,1,2,3,9,2,64,111,7,111,1,2,3,2
 DB_PATH = /home/db
 ```
 ## Docker
-    docker run -d -p 3010:3010 --name scheduler dart-scheduler:1  
+```
+docker run -d -p 3010:3010 --name scheduler dart-scheduler:1  \
+-e ENV='development' \
+-e PORT='bar' \
+-e AES_CIPHER='2,3,2,10,3,77,2,3,31,2,65,151,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111' \
+-e DB_PATH='/home/db' 
+```
 ## Docker compose
 ```
 version: "3.9"

@@ -32,7 +32,7 @@ void startDemonSchedule() async {
 
 void addCron(Map c) async {
   var id = uuid.v1();
-  c["actif"] = (c["actif"] == "on");
+  c['actif'] = (c['actif'] == 'on');
   await cronBox.put(id, c);
   _runCron(id);
 }
@@ -62,10 +62,10 @@ void _runCron(String i) async {
         // insert execution
         executionBox.put('start-' + id, {
           'cronId': i,
-          'cronName': c["name"],
+          'cronName': c['name'],
           'name': 'start',
           'date': DateTime.now().toString(),
-          'code': "",
+          'code': '',
         });
         // run schedule
         try {
@@ -86,7 +86,7 @@ void _runCron(String i) async {
             onDone: () async {
               executionBox.put('end-' + id, {
                 'cronId': i,
-                'cronName': c["name"],
+                'cronName': c['name'],
                 'name': 'end: ' + utf8.decoder.convert(output),
                 'date': DateTime.now().toString(),
                 'code': await process.exitCode,
@@ -99,7 +99,7 @@ void _runCron(String i) async {
           }, onDone: () async {
             executionBox.put('end-' + id, {
               'cronId': i,
-              'cronName': c["name"],
+              'cronName': c['name'],
               'name': 'end: ' + utf8.decoder.convert(output),
               'date': DateTime.now().toString(),
               'code': await process.exitCode,
@@ -108,7 +108,7 @@ void _runCron(String i) async {
         } catch (e) {
           executionBox.put('error-' + id, {
             'cronId': i,
-            'cronName': c["name"],
+            'cronName': c['name'],
             'name': 'error',
             'date': DateTime.now().toString(),
             'code': e.toString(),
@@ -121,10 +121,10 @@ void _runCron(String i) async {
   }
 
   inMemoryCron[i] = {
-    'scheduleTask': s ?? "",
-    'name': c["name"],
-    'actif': c["actif"],
-    'schedule': c["schedule"],
+    'scheduleTask': s ?? '',
+    'name': c['name'],
+    'actif': c['actif'],
+    'schedule': c['schedule'],
   };
 }
 
@@ -149,7 +149,7 @@ void deleteJob(key) async {
   executionBox.deleteAll((await executionBox.getAllValues())
       .entries
       .toList()
-      .where((e) => e.value["cronId"] == key)
+      .where((e) => e.value['cronId'] == key)
       .map((e) => e.key)
       .toList());
 }
@@ -171,10 +171,10 @@ void toggleJob(i) async {
         // insert execution
         executionBox.put('start-' + id, {
           'cronId': i,
-          'cronName': c["name"],
+          'cronName': c['name'],
           'name': 'start',
           'date': DateTime.now().toString(),
-          'code': "",
+          'code': '',
         });
         // run schedule
         try {
@@ -195,7 +195,7 @@ void toggleJob(i) async {
             onDone: () async {
               executionBox.put('end-' + id, {
                 'cronId': i,
-                'cronName': c["name"],
+                'cronName': c['name'],
                 'name': 'end: ' + utf8.decoder.convert(output),
                 'date': DateTime.now().toString(),
                 'code': await process.exitCode,
@@ -208,7 +208,7 @@ void toggleJob(i) async {
           }, onDone: () async {
             executionBox.put('end-' + id, {
               'cronId': i,
-              'cronName': c["name"],
+              'cronName': c['name'],
               'name': 'end: ' + utf8.decoder.convert(output),
               'date': DateTime.now().toString(),
               'code': await process.exitCode,
@@ -217,7 +217,7 @@ void toggleJob(i) async {
         } catch (e) {
           executionBox.put('error-' + id, {
             'cronId': i,
-            'cronName': c["name"],
+            'cronName': c['name'],
             'name': 'error',
             'date': DateTime.now().toString(),
             'code': e.toString(),
@@ -238,7 +238,7 @@ Future deleteExecution(String? key) async {
   var keys = (await executionBox.getAllValues())
       .entries
       .toList()
-      .where((e) => e.value["cronId"] == key)
+      .where((e) => e.value['cronId'] == key)
       .map((e) => e.key)
       .toList();
   return executionBox.deleteAll(keys);
