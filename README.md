@@ -16,13 +16,6 @@ PORT = 3010
 AES_CIPHER = 2,3,2,10,3,77,2,3,31,2,65,151,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111
 DB_PATH = /home/db
 ```
-
-## Windows
-
-## Linux
-
-## Macos
-
 ## Docker
     docker run -d -p 3010:3010 --name scheduler dart-scheduler:1  
 ## Docker compose
@@ -62,6 +55,11 @@ dart compile exe -o dart_scheduler.exe lib/main.dart
 ```
 ./dart_scheduler.exe 
 ```
+
+## From binaries (Linux/Windows/Macos)
+
+[Here](https://github.com/naoufalzerai/dart_scheduler/releases)
+
 # Exemple
 ## GUI
 
