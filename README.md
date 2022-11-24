@@ -26,6 +26,23 @@ DB_PATH = /home/db
 ## Docker
     docker run -d -p 3010:3010 --name scheduler dart-scheduler:1  
 ## Docker compose
+```
+version: "3.9"
+services:
+  web:
+    image: naoufalzerai/dart_scheduler
+    ports:
+      - "3010:3010"
+    volumes:
+      - ../compose-test:/db
+    environment:
+      ENV: development
+      HOST: 0.0.0.0
+      PORT: 3010
+      AES_CIPHER: 2,3,2,1,3,77,2,3,31,2,65,111,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111
+      DB_PATH: /db
+```
+
 ## From source
 Make sure you have [Dart](https://dart.dev/get-dart) instaled 
 
