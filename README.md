@@ -47,7 +47,7 @@ cd dart_scheduler
 ```
 dart compile exe -o dart_scheduler.exe lib/main.dart   
 ```
-4. create .env config
+4. Create .env config
 ```
 ENV = development
 HOST = 0.0.0.0
@@ -72,7 +72,7 @@ DB_PATH = /home/db
 # Todo list:
 - [ ] Authentification
 - [ ] API
-- [ ] Filter and sort table
+- [x] Filter and sort table
 - [x] Docker-compose
 - [x] Edit 
 - [x] Enable/disable

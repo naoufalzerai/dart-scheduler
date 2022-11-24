@@ -30,3 +30,6 @@ function deleteLog(id) {
         method:'DElETE',
     }).then(response=>document.location.replace('/execution/'+id))
 }
+$(document).ready(function () {
+    $('#datagrid').DataTable();
+});
