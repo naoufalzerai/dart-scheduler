@@ -3,6 +3,18 @@
 Dart scheduler allows you to run agnostic cron and jobs, all you have to do is fire the app and dchedule your job 🔥
 ![home](doc/img/job1.png)
 # How to run
+
+## .env config
+
+
+```
+ENV = development
+HOST = 0.0.0.0
+PORT = 3010
+AES_CIPHER = 2,3,2,10,3,77,2,3,31,2,65,151,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111
+DB_PATH = /home/db
+```
+
 ## Windows
 
 ## Linux
