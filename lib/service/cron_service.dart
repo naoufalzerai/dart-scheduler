@@ -15,13 +15,16 @@ late final CollectionBox executionBox;
 Map<String, dynamic> inMemoryCron = <String, dynamic>{};
 
 void startDemonSchedule() async {
-  var aes =
-      env('AES_CIPHER').toString().split(',').map((e) => int.parse(e)).toList();
+  var aes = env('DART_SCHEDULER_AES_CIPHER')
+      .toString()
+      .split(',')
+      .map((e) => int.parse(e))
+      .toList();
 
   collection = await BoxCollection.open(
     'CronBoxDb',
     {'crons', 'executions'},
-    path: env('DB_PATH'),
+    path: env('DART_SCHEDULER_DB_PATH'),
     key: HiveAesCipher(aes),
   );
   cronBox = await collection.openBox<Map>('crons');

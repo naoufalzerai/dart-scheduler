@@ -7,10 +7,14 @@ import 'service/cron_service.dart';
 
 void main() async {
   final app = App();
-  final port = env('PORT') ?? 3000;
-  final host = env('HOST') ?? '127.0.0.1';
+  final port = env('DART_SCHEDULER_PORT') ?? 3000;
+  final host = env('DART_SCHEDULER_HOST') ?? '127.0.0.1';
 
-  app.use(logger(level: Level.error));
+  if (env('DART_SCHEDULER_ENV') != 'development') {
+    app.use(logger(level: Level.error));
+  } else {
+    app.use(logger());
+  }
   app.use(static('public'));
   app.use(templating());
   // usually sent from REST API

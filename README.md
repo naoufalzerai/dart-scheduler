@@ -7,12 +7,14 @@ Dart scheduler allows you to run agnostic cron and jobs, all you have to do is f
 # How to run
 
 ## Docker
+With Python and NodeJS already embedded 👍
 ```
 docker run -d -p 3010:3010 --name scheduler dart-scheduler:1  \
--e ENV='development' \
--e PORT='bar' \
--e AES_CIPHER='2,3,2,10,3,77,2,3,31,2,65,151,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111' \
--e DB_PATH='/home/db' 
+-e DART_SCHEDULER_ENV='development' \
+-e DART_SCHEDULER_PORT='3010' \
+-e DART_SCHEDULER_HOST: 0.0.0.0\
+-e DART_SCHEDULER_AES_CIPHER='2,3,2,10,3,77,2,3,31,2,65,151,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111' \
+-e DART_SCHEDULER_DB_PATH='/home/db' 
 ```
 ## Docker compose
 ```
@@ -25,11 +27,11 @@ services:
     volumes:
       - ../compose-test:/db
     environment:
-      ENV: development
-      HOST: 0.0.0.0
-      PORT: 3010
-      AES_CIPHER: 2,3,2,1,3,77,2,3,31,2,65,111,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111
-      DB_PATH: /db
+      DART_SCHEDULER_ENV: development
+      DART_SCHEDULER_HOST: 0.0.0.0
+      DART_SCHEDULER_PORT: 3010
+      DART_SCHEDULER_AES_CIPHER: 2,3,2,1,3,77,2,3,31,2,65,111,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111
+      DART_SCHEDULER_DB_PATH: /db
 ```
 
 ## From source
@@ -72,6 +74,9 @@ DB_PATH = /home/db
 # Todo list:
 - [ ] Authentification
 - [ ] API
+- [ ] Unit testing
+- [ ] Auto refresh
+- [ ] Visual coherence
 - [x] Filter and sort table
 - [x] Docker-compose
 - [x] Edit 
