@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:lucifer/lucifer.dart';
+import 'package:scheduler/service/cron_service.dart';
 
 class RunController extends Controller {
   RunController(App app) : super(app);
@@ -18,9 +20,20 @@ class RunController extends Controller {
     socket.on('close', (WebSocket client) {
       res.log.i('close');
     });
-    socket.on('message', (WebSocket client, message) {
-      res.log.i('message:$message');
-      client.send('hi');
+    socket.on('message', (WebSocket client, message) async {
+      if (message.toString().isNotEmpty) {
+        res.log.i('message:$message');
+        try {
+          final listner = await execCommand(message);
+          listner.listen(
+            (event) {
+              client.send(utf8.decoder.convert(event));
+            },
+          );
+        } catch (e) {
+          client.send('error');
+        }
+      }
     });
     socket.on('error', (WebSocket client, error) {
       res.log.e('$error');

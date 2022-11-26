@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -245,4 +246,13 @@ Future deleteExecution(String? key) async {
       .map((e) => e.key)
       .toList();
   return executionBox.deleteAll(keys);
+}
+
+FutureOr<Stream<List<int>>> execCommand(String command) async {
+  final cmd = command.split(' ');
+  final Process process = (cmd.length >= 2)
+      ? await Process.start(cmd[0], cmd.sublist(1))
+      : await Process.start(command, []);
+
+  return process.stdout;
 }

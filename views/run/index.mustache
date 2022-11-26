@@ -20,11 +20,13 @@
     const s = new WebSocket(uri);
     s.onopen = (event) => {        
         document.getElementById('Command').disabled = false;
-        s.send('hi');
+        s.send('ls');
     };
     
     s.onmessage = (e) => {
-        document.getElementById('output').value += e.data
+        textarea = document.getElementById('output');
+        textarea.value += e.data;
+        textarea.scrollTop = textarea.scrollHeight;
     }
 
     function sendCommand(ele) {
