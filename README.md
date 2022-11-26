@@ -51,11 +51,11 @@ dart compile exe -o dart_scheduler.exe lib/main.dart
 ```
 4. Create .env config
 ```
-ENV = development
-HOST = 0.0.0.0
-PORT = 3010
-AES_CIPHER = 2,3,2,10,3,77,2,3,31,2,65,151,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111
-DB_PATH = /home/db
+DART_SCHEDULER_ENV = development
+DART_SCHEDULER_HOST = 0.0.0.0
+DART_SCHEDULER_PORT = 3010
+DART_SCHEDULER_AES_CIPHER = 2,3,2,10,3,77,2,3,31,2,65,151,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111
+DART_SCHEDULER_DB_PATH = /home/db
 ```
 5. Execute dart_scheduler.exe
 ```
