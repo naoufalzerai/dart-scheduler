@@ -1,5 +1,6 @@
 import 'package:lucifer/lucifer.dart';
 import 'package:scheduler/controller/job_controller.dart';
+import 'package:scheduler/controller/run_controller.dart';
 import 'package:scheduler/middleware/templating.dart';
 
 import 'controller/execution_controller.dart';
@@ -25,6 +26,7 @@ void main() async {
   app.use(urlencoded());
   final job = JobController(app);
   final execution = ExecutionController(app);
+  final run = RunController(app);
 
   app.get('/', (Req req, Res res) async {
     await res.render('index', {'title': 'Hello Detective'});
@@ -36,6 +38,7 @@ void main() async {
       .get('/edit/:id', job.editForm)
       .post('/toggle/:id', job.toggle);
   app.route('/execution', execution);
+  app.route('/run', run).get("/ws", run.ws);
 
   await app.listen(port, host, (() {
     print('Server running at http://${app.host}:${app.port}');
