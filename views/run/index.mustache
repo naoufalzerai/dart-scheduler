@@ -1,0 +1,38 @@
+<div class="mb-3">
+  <label for="" class="form-label"><i class="fas fa-terminal"></i> Output</label>
+  <textarea disabled class="form-control" name="output" id="output" rows="10"></textarea>
+</div>
+<div class="mb-3">  
+  <input type="text"
+    disabled
+    onkeydown="sendCommand(this)"
+    class="form-control" name="Command" id="Command" aria-describedby="helpId" placeholder="Type your command">
+</div>
+<script>
+    var loc = window.location;
+    if (loc.protocol === "https:") {
+        uri = "wss:";
+    } else {
+        uri = "ws:";
+    }
+    uri += "//" + loc.host;
+    uri += loc.pathname + "/ws";
+    const s = new WebSocket(uri);
+    s.onopen = (event) => {        
+        document.getElementById('Command').disabled = false;
+        s.send('ls');
+    };
+    
+    s.onmessage = (e) => {
+        textarea = document.getElementById('output');
+        textarea.value += e.data;
+        textarea.scrollTop = textarea.scrollHeight;
+    }
+
+    function sendCommand(ele) {
+        if(event.key === 'Enter'  || event.keyCode === 13) {
+            s.send(ele.value);   
+            document.getElementById('Command').value = '';
+        }
+    }
+</script>
