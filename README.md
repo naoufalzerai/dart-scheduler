@@ -77,6 +77,7 @@ DB_PATH = /home/db
 - [ ] Unit testing
 - [ ] Auto refresh
 - [ ] Visual coherence
+- [ ] Add CMD
 - [x] Filter and sort table
 - [x] Docker-compose
 - [x] Edit 
