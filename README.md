@@ -3,7 +3,7 @@
 
 # Introduction
 Dart scheduler allows you to run agnostic cron and jobs, on any OS🔥
-![home](doc/img/job1.png)
+![home](doc/img/doc.gif)
 # How to run
 
 ## Docker
@@ -27,7 +27,7 @@ services:
     volumes:
       - ../compose-test:/db
     environment:
-      DART_SCHEDULER_ENV: development
+      DART_SCHEDULER_ENV: production
       DART_SCHEDULER_HOST: 0.0.0.0
       DART_SCHEDULER_PORT: 3010
       DART_SCHEDULER_AES_CIPHER: 2,3,2,1,3,77,2,3,31,2,65,111,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111
@@ -57,7 +57,8 @@ DART_SCHEDULER_PORT = 3010
 DART_SCHEDULER_AES_CIPHER = 2,3,2,10,3,77,2,3,31,2,65,151,35,111,1,2,3,9,2,64,111,7,111,1,2,3,211,2,34,111,33,111
 DART_SCHEDULER_DB_PATH = /home/db
 ```
-5. Execute dart_scheduler.exe
+
+1. Execute dart_scheduler.exe
 ```
 ./dart_scheduler.exe 
 ```
@@ -68,16 +69,40 @@ DART_SCHEDULER_DB_PATH = /home/db
 
 # Exemple
 ## GUI
-
+### Script
+![Script](doc/img/sh.png)
+### Python
+![Python](doc/img/python.png)
+### NodeJS
+![NodeJS](doc/img/node.png)
+### REST API
+![REST](doc/img/REST.png)
 ## Web Api
+Availble endpoints : 
 
+    GET     /job
+    POST    /job
+    DELETE  /job
+    GET     /job/create
+    GET     /job/edit/:id
+    POST    /job/toggle/:id
+    GET     /job/:id
+    PUT     /job/:id
+    DELETE  /job/:id
+    GET     /execution
+    DELETE  /execution
+    GET     /execution/:id
+    DELETE  /execution/:id
+    GET     /run/ws
+    
 # Todo list:
 - [ ] Authentification
-- [ ] API
+- [ ] CORS config
 - [ ] Unit testing
-- [ ] Auto refresh
-- [ ] Visual coherence
-- [ ] Add CMD
+- [x] API
+- [x] Auto refresh
+- [x] Visual coherence
+- [x] Add CMD
 - [x] Filter and sort table
 - [x] Docker-compose
 - [x] Edit 

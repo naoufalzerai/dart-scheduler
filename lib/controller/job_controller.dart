@@ -24,6 +24,7 @@ class JobController extends Controller {
   FutureOr index(Req req, Res res) async {
     var list = getAllJobs();
     await res.render('job/list', {
+      'refresh': true,
       'data': list.entries.toList().map((e) => {'key': e.key, 'value': e.value})
     });
   }

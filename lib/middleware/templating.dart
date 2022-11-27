@@ -10,7 +10,7 @@ Callback templating([String? views]) {
       File file = File('$directory/$view.mustache');
       File headerFile = File('$directory/shared/header.mustache');
       File footerFile = File('$directory/shared/footer.mustache');
-
+      data['refresh'] = data['refresh'] ?? false;
       if (await file.exists() &&
           await headerFile.exists() &&
           await footerFile.exists()) {
@@ -29,6 +29,7 @@ Callback templating([String? views]) {
         var template = Template(
             '{{> header }} ${await file.readAsString()} {{> footer }}',
             partialResolver: resolver);
+
         String html = template.renderString(data);
         await res.send(html);
       }

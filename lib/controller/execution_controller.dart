@@ -13,6 +13,7 @@ class ExecutionController extends Controller {
     await res.render('execution/list', {
       'back': false,
       'id': req.params["id"] ?? '',
+      'refresh': true,
       'data': Map.fromEntries(list).entries.toList().map(
             (e) => {'key': e.key, 'value': e.value},
           )
@@ -27,6 +28,7 @@ class ExecutionController extends Controller {
     await res.render('execution/list', {
       'back': true,
       'id': req.params["id"] ?? '',
+      'refresh': true,
       'data': Map.fromEntries(list)
           .entries
           .toList()

@@ -20,12 +20,17 @@
     const s = new WebSocket(uri);
     s.onopen = (event) => {        
         document.getElementById('Command').disabled = false;
-        s.send('ls');
+        s.send('echo Connected to host');
     };
     
     s.onmessage = (e) => {
         textarea = document.getElementById('output');
         textarea.value += e.data;
+        textarea.scrollTop = textarea.scrollHeight;
+    }
+    s.onclose = (e) => {
+        textarea = document.getElementById('output');
+        textarea.value += "Host disconnected refresh this page";
         textarea.scrollTop = textarea.scrollHeight;
     }
 
