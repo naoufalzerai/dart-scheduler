@@ -99,7 +99,7 @@ Availble endpoints :
 - [ ] Authentification
 - [ ] CORS config
 - [ ] Unit testing
-- [ ] Triger job
+- [ ] Trigger job
 - [x] API
 - [x] Auto refresh
 - [x] Visual coherence
